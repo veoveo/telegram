@@ -24,7 +24,7 @@ class Authentication:
     
 class ShortLink:
     def __init__(self, origin_url: str, sub_ids: List[str] = []):
-        self.origin_url = self._clean_url(origin_url)
+        self.origin_url = origin_url
         self.sub_ids = sub_ids
 
     @property

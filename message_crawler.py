@@ -4,6 +4,9 @@ import os
 import time
 import image_upload
 import re
+import shork_link
+from post_fb import fb_post
+from threading import Thread
 
 api_id = 29461139
 api_hash = '61d8d5fbfd1bc9afeeaaf9db1b4f64ed'
@@ -24,15 +27,14 @@ def fetch_one_message(msg):
     mess = msg.message
     link = re.findall(r'(https?://shope.ee[^\s]+)', mess)
     for i in link:
-      #sửa ở đây
-      mess.replace(i,móihdjshdhsj)
+      mess = mess.replace(i,shork_link.shorklink(i))
 
     item = {
-        "message": msg.message,  # message content
+        "message": mess,  # message content
         "media_file": media_file
     }
-
     print(item)
+    return item
 
 def fetch_all_group_message(client):
     dialog_list = client.get_dialogs()
@@ -49,7 +51,9 @@ def fetch_all_group_message(client):
                 msg_iter = client.iter_messages(entity.id, min_id=max_message_id)
 
                 for msg in msg_iter:
-                    fetch_one_message(msg)
+                    post = fetch_one_message(msg)
+                    if post["message"].count("://shope.ee/") !=0:
+                      Thread(target=fb_post, args=(post["message"],post["media_file"])).start()
                 max_message_id = msg.id
                 time.sleep(2)
              
