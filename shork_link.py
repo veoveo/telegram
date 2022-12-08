@@ -90,6 +90,5 @@ def shorklink(link):
   APP_ID = "17398250011"
   APP_SECRET = "U675F3TO44TAWI67LJBUZBZN44QVSJKD"
   client = ShopeeAffiliate(app_id=APP_ID, app_secret=APP_SECRET)
-  print(url)
-  return client.shortlink(url, "").json()
+  return client.shortlink(url, "").json()['data']['generateShortLink']['shortLink']
     
